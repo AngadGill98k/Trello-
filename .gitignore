@@ -1,0 +1,16 @@
+# Ignore root IDE folder
+.idea/
+
+# Ignore backend build output
+backend/target/
+backend/build/
+backend/.gradle/
+
+# Ignore backend logs
+backend/*.log
+backend/*.tmp
+backend/*.swp
+
+# Ignore OS files
+.DS_Store
+Thumbs.db

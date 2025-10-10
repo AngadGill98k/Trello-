@@ -1,0 +1,63 @@
+                            // to read files 
+// in teh controller params 
+
+@RequestParam("image") MultipartFile[] files
+//to store files remember to openbackedn formt eh bacneknf older not from project root
+Path project_dir= Paths.get("").toAbsolutePath();
+            Path uploads=project_dir.resolve("uploads");
+            File upload=uploads.toFile();
+            if(!upload.exists()){
+                upload.mkdir();
+            }
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile file = files[i];
+                Log.log.info("(services.User.create_album) files rec {}", file.getOriginalFilename());
+                File destination=new File(upload,file.getOriginalFilename());
+                file.transferTo(destination);
+            }
+
+
+
+
+
+
+            //to read user id
+ HttpServletRequest req
+String user_id=(String) req.getAttribute("user_id");
+
+
+
+
+            //2 wasy to create cookie 
+public CsrfToken csrf(CsrfToken token, HttpServletResponse response) {
+        // Create a cookie with the CSRF token value
+        Cookie cookie = new Cookie("XSRF-TOKEN", token.getToken());
+        cookie.setPath("/");                // available for all paths
+        cookie.setHttpOnly(false);          // must be false so Angular can read it
+        cookie.setSecure(true);             // true if using HTTPS
+        cookie.setMaxAge(-1);               // session cookie
+
+        response.addCookie(cookie);
+
+        return token; // still return JSON if you want to debug
+    }
+
+@PostMapping("/signin")
+    public ResponseEntity<Response<User_dto>> signin(@RequestBody Login_dto user ){
+        Response<User_dto> res=login.signin(user);
+        String refreshToken=jwt.refresh_Token(res.getData().getId());
+        res.setRefresh_token(refreshToken);
+        ResponseCookie cookie=ResponseCookie.from("token",refreshToken)
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Strict")
+                .path("/")
+                .maxAge(7*24*60*60)
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(res);
+    }
+//to send headers we  use response entity
+
+

@@ -1,0 +1,17 @@
+<input [(ngModel)]="input" type="text" placeholder="Search..." (click)="Search()" />
+
+
+<ul>
+    @for (result of results; track result._id) {
+        <li key="">
+            <span>{{result.name}}</span>
+
+
+            @if(result.is_frnd){
+                <span>already frnd</span>
+            }@else{
+                <button (click)="SendRequest(result)">Send Request</button>
+            }
+        </li>
+    }
+</ul>

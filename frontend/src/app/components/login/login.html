@@ -1,0 +1,21 @@
+<div style="display: flex;justify-content: center;align-items: center;height: 100vh;width: 100vw;">
+  
+        @if(toggle){
+            <div style="display: flex;flex-direction: column;box-sizing: border-box;">
+                <input type="text" [(ngModel)]="name">
+                <input type="text" [(ngModel)]="mail"> 
+                <input type="text" [(ngModel)]="pass">
+                
+                <button (click)="Singin()">Login</button>
+            </div>
+        }@else {
+            <div style="display: flex;flex-direction: column;box-sizing: border-box;">
+                <input type="text" [(ngModel)]="name">
+                <input type="text" [(ngModel)]="mail">
+                <input type="text" [(ngModel)]="pass">
+                <button (click)="Signup()">Signup</button>
+            </div>
+        }
+        <button (click)="toggle = !toggle">Toggle</button>
+
+</div>

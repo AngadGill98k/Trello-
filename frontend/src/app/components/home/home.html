@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+<div class="home_container">
+
+        <div class="home_left">
+            <button (click)="active_btn = 'Projects'">Projects</button>
+            <button (click)="active_btn = 'search'">Search</button>
+            <button (click)="active_btn = 'req'">Request</button>
+            <div>
+            @if (active_btn==="Projects") {<app-projects></app-projects>}
+            @if (active_btn==="search") {<app-search></app-search>}
+            @if (active_btn==="req") {<app-request></app-request>}
+            </div>
+            
+        </div>
+
+
+        <div class="home_right">
+
+        </div>
+</div>

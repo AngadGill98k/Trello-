@@ -1,0 +1,10 @@
+<ul>
+    @for (request of requests_list; track request._id) {
+        <li key="">
+            <span>{{request.name}}</span>
+
+            <button (click)="Accept(request)">Accept</button>
+            <button (click)="Decline(request)">Decline</button>
+        </li>
+    }
+</ul>

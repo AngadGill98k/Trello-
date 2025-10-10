@@ -1,0 +1,6 @@
+<p>projects works!</p>
+@for (project of projects_list; track project._id) {
+    <li key="" (click)="OpenProject(project)">
+        <span>{{project.name}}</span>
+    </li>
+}

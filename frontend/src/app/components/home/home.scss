@@ -1,0 +1,14 @@
+.home_container{
+    display: flex;
+    height: 96vh;
+    flex-direction: row;
+}
+.home_left{
+    background-color: lightblue;
+    width: 20%;
+    
+}
+.home_right{
+    background-color: lightgrey;
+    width: 80%;
+}
