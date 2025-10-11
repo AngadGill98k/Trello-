@@ -1,8 +1,6 @@
 package com.example.Backend.models;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -45,34 +43,53 @@ public class Projects {
         this.members.add(member);
     }
 
-    public void setTodo(String todo) {
+    public void genTodo(String todo){
+     Task task = new Task();
+     task.setName(todo);
+     task.genId();
+     this.todo.add(task);
+    }
+
+    public void setTodo(String todo,String todoid) {
         Task task=new Task();
         task.setName(todo);
-        task.setId();
+        task.setId(todoid);
         this.todo.add(task);
     }
-    public void setProg(String prog) {
+    public void setProg(String prog,String todoid) {
         Task task=new Task();
         task.setName(prog);
-        task.setId();
+        task.setId(todoid);
         this.prog.add(task);
     }
-    public void setDone(String done) {
+    public void setDone(String done,String todoid) {
         Task task=new Task();
         task.setName(done);
-        task.setId();
+        task.setId(todoid);
         this.done.add(task);
     }
-//    public void removeTodo(String todo) {
-//        Task task=new Task();
-//        task.setName(todo);
-//        task.setId();
-//        this.todo.remove(todo);
-//    }
-//    public void removeProg(String prog) {
-//        this.prog.remove(prog);
-//    }
-//    public void removeDone(String done) {
-//        this.done.remove(done);
-//    }
+    public void removeTodo(String todoid) {
+        ArrayList<Task> todos=this.todo;
+        for (Task task:todos) {
+            if(task.getId().equals(todoid)) {
+                this.todo.remove(task);
+            }
+        }
+    }
+    public void removeProg(String prog) {
+        ArrayList<Task> todos=this.prog;
+        for (Task task:todos) {
+            if(task.getId().equals(prog)) {
+                this.todo.remove(task);
+            }
+        }
+    }
+    public void removeDone(String done) {
+        ArrayList<Task> todos=this.done;
+        for (Task task:todos) {
+            if(task.getId().equals(done)) {
+                this.todo.remove(task);
+            }
+        }
+    }
 }

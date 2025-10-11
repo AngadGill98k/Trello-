@@ -33,6 +33,10 @@ public class User {
         return id;
     }
 
+    public ArrayList<Projects> getProjects(){return this.projects;}
+
+    public ArrayList<String> getFriends(){return this.friends;}
+
     public void setName(String name) {
         this.name = name;
     }
@@ -43,6 +47,14 @@ public class User {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public void setProjetcs(Projects project){
+        this.projects.add(project);
+    }
+
+    public void setFriends(String friends) {
+        this.friends.add(friends);
     }
 }
 
