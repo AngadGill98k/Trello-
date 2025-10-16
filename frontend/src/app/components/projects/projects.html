@@ -1,6 +1,16 @@
-<p>projects works!</p>
-@for (project of projects_list; track project._id) {
+<h3>Projects</h3>
+
+
+<div class="add_project">
+    <input type="text" placeholder="Search Projects"[(ngModel)]="ProjectName" (keydown.enter)="AddProject()"/>
+    <button (click)="AddProject()">Add</button>
+</div>
+
+
+<ul>
+@for (project of projects_list(); track project._id) {
     <li key="" (click)="OpenProject(project)">
         <span>{{project.name}}</span>
     </li>
 }
+</ul>

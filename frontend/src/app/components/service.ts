@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,8 @@ export class Service {
         fetch(`http://localhost:8080/csrf-token`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                
             },
             credentials: 'include'
         })
@@ -71,5 +72,11 @@ export class Service {
         } catch (error) {
             console.error('Fetch error:', error);
         }
+    }
+
+
+    CurrentProject:WritableSignal<any>=signal(false);
+    setCurrentProject(project:any){
+        this.CurrentProject.set(project);
     }
 }

@@ -1,0 +1,38 @@
+h3 {
+    margin-top: 0px;
+}
+.add_project{
+    display: flex;
+    flex-direction: row;
+    background-color: lightpink;
+    
+    height: 4vh;
+    input{
+        width: 70%;
+        background: none;
+        border: none;
+        border-radius: 20px;
+        box-sizing: border-box;
+        padding-left: 10px;
+    }
+    button{
+        width: 30%;
+        border: none;
+    }
+    
+}
+ul{
+    list-style: none;
+    background-color: limegreen;
+    padding: 0%;
+    box-sizing: border-box;
+    li{
+        margin-bottom: 2px;
+        height: 5vh;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding-left: 10px;
+        background-color: navajowhite;
+    }
+}

@@ -38,7 +38,7 @@ Singin(){
   .then(async data => {
     console.log(data);
     if(data.msg){
-      this.service.set_access_token(data.access_token); 
+      await this.service.set_access_token(data.access_token); 
       await this.service.csrf_token();
       console.log(this.service.access_token,this.service.get_csrf());
       this.router.navigate(['home']);

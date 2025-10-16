@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface User_repo extends MongoRepository<User, String> {
     // You can add custom query methods later
     User findByMail(String mail);
-    User findByPass(String name);
-    User findByName(String pass);
+    User findByPass(String pass);
+    User findByName(String name);
 }

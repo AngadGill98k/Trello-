@@ -27,10 +27,11 @@ public class Filter extends OncePerRequestFilter {
 
         // 1️⃣ Try to get JWT from Authorization header
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
         }else if (request.getCookies() != null) {
-Log.log.info("(config.Filter) access tokne is expired ");
+Log.log.info("(config.Filter) access tokne is expired/null ");
             for (Cookie cookie : request.getCookies()) {
 
                 if ("token".equals(cookie.getName())) {

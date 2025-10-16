@@ -69,27 +69,24 @@ public class Projects {
         this.done.add(task);
     }
     public void removeTodo(String todoid) {
-        ArrayList<Task> todos=this.todo;
-        for (Task task:todos) {
-            if(task.getId().equals(todoid)) {
-                this.todo.remove(task);
-            }
-        }
+        this.todo.removeIf(task -> task.getId().equals(todoid));
     }
-    public void removeProg(String prog) {
-        ArrayList<Task> todos=this.prog;
-        for (Task task:todos) {
-            if(task.getId().equals(prog)) {
-                this.todo.remove(task);
-            }
-        }
+
+    public void removeProg(String progId) {
+        this.prog.removeIf(task -> task.getId().equals(progId));
     }
-    public void removeDone(String done) {
-        ArrayList<Task> todos=this.done;
-        for (Task task:todos) {
-            if(task.getId().equals(done)) {
-                this.todo.remove(task);
-            }
-        }
+
+    public void removeDone(String doneId) {
+        this.done.removeIf(task -> task.getId().equals(doneId));
+    }
+
+    public void tempTodo(Task todo){
+        this.todo.add(todo);
+    }
+    public void tempProg(Task todo){
+        this.prog.add(todo);
+    }
+    public void tempDone(Task todo){
+        this.done.add(todo);
     }
 }

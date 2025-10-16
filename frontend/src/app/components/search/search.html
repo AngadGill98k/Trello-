@@ -1,4 +1,4 @@
-<input [(ngModel)]="input" type="text" placeholder="Search..." (click)="Search()" />
+<input [(ngModel)]="input" type="text" placeholder="Search..." (keydown.enter)="Search()" />
 
 
 <ul>
@@ -13,5 +13,11 @@
                 <button (click)="SendRequest(result)">Send Request</button>
             }
         </li>
+    }
+
+    @if(results !=null && results.is_frnd){
+        <span>already frnd</span>
+    }@else{
+        <button (click)="SendRequest(results)">Send Request</button>
     }
 </ul>

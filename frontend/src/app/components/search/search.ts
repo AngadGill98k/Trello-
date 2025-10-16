@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Service } from '../service';
 
 @Component({
   selector: 'app-search',
@@ -9,19 +10,28 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './search.scss'
 })
 export class Search {
+  csrfToken:string="";
+  accessToken:string=""
+  constructor(private service:Service){}
   input:String="";
-  results:any[]=[];
+  results:any={};
+
   Search(){
+    this.csrfToken=this.service.get_csrf()||"";
+    this.accessToken=this.service.access_token||"";
     console.log("search.Search",this.input);
     if(this.input.length<=0){return;}
-    
+    console.log(typeof this.input)
     if(this.input.length>0){
-      fetch('http://localhost:3000',{
+      let name=this.input;
+      fetch('http://localhost:8080/search_user',{
         method:'POST',
         headers:{
           'Content-Type':'application/json',
+          'X-CSRF-TOKEN': this.csrfToken,
+          'Authorization': `Bearer ${this.accessToken}`
         },
-        body:JSON.stringify({input:this.input}),
+        body: JSON.stringify({ name }),
         credentials:'include'
       })
       .then(res=>res.json())
@@ -29,6 +39,7 @@ export class Search {
         console.log(data);
         if(data.msg){
           //show name  id and if frnd
+          this.results=data.data;
         }
       })
     }

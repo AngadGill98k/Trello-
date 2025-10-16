@@ -45,18 +45,38 @@ public class Home_services {
         }
     }
 
+    public Response<Projects> getProject(String projectid){
+        try {
+            Optional<Projects> project=projectsRepo.findById(projectid);
+            Projects projects=project.get();
+            Response<Projects> res=new Response();
+            res.setMsg(true);
+            res.setMessage("sb ok hai");
+            res.setData(projects);
+            return res;
+        }catch (Exception e){
+            Response<Projects> res = new Response<>();
+            res.setMsg(false);
+            res.setMessage(e.getMessage());
+            Log.log.error(e.getMessage());
+            return res;
+        }
+    }
+
     public Response<Projects> addproject(String userid, Project_dto project){
         try{
             Log.log.info("req came to (home_ser.addproject");
             Response<Projects> res=new Response();
+            Log.log.info("id i s"+userid);
             Optional<User> optuser=user_repo.findById(userid);
             User user=optuser.get();
             Projects projects=new Projects();
             projects.setName(project.getName());
             projects.setMembers(userid);
             user.setProjetcs(projects);
-            user_repo.save(user);
+
             projectsRepo.save(projects);
+            user_repo.save(user);
             res.setMessage("project bn gya");
             res.setMsg(true);
             res.setData(projects);
@@ -70,17 +90,18 @@ public class Home_services {
         }
     }
 
-    public Response searchfriend(String name){
+    public Response<User> searchfriend(String name){
         try{
             Log.log.info("req came to (home_ser.searchfriend)");
-            Response res=new Response();
+            Response<User> res=new Response();
             User user=user_repo.findByName(name);
-
-            res.setMessage("dost bn gya");
+            Log.log.info(""+user.getId());
+            res.setData(user);
+            res.setMessage("mil gya");
             res.setMsg(true);
             return res;
         }catch(Exception e){
-            Response res = new Response<>();
+            Response<User> res = new Response<>();
             res.setMsg(false);
             res.setMessage(e.getMessage());
             Log.log.error(e.getMessage());
@@ -90,22 +111,11 @@ public class Home_services {
 
     //may add request system
 
-    public Response<ArrayList<String>> addfriend(String userid,String friend_identifier){
+    public Response<ArrayList<String>> addfriend(String userid,String frienndName){
         try {
             Response<ArrayList<String>> res = new Response<>();
-            Optional<User> optuser=user_repo.findById(userid);
-            User user= optuser.get();;
-            ArrayList<String> userlist=user.getFriends();
-            if(userlist.contains(friend_identifier)){
-                res.setMsg(true);
-                res.setMessage("dost already");
-            }else{
-                user.setFriends(friend_identifier);
-                user_repo.save(user);
-            }
 
-            Optional<User> optfriend=user_repo.findById(friend_identifier);
-            User friend = optfriend.get();
+            User friend=user_repo.findByName(frienndName);
             ArrayList<String> friendlist=friend.getFriends();
             if(friendlist.contains(userid)){
                 res.setMsg(true);
@@ -113,10 +123,22 @@ public class Home_services {
             }else{
                 friend.setFriends(userid);
                 user_repo.save(friend);
+
+            }
+            Optional<User> optuser=user_repo.findById(userid);
+            User user= optuser.get();;
+            ArrayList<String> userlist=user.getFriends();
+            if(userlist.contains(frienndName)){
+                res.setMsg(true);
+                res.setMessage("dost already");
+            }else{
+                user.setFriends(frienndName);
+                user_repo.save(user);
                 res.setMsg(true);
                 res.setMessage("dost bn gya");
                 res.setData(user.getFriends());
             }
+
 
             return res;
         }catch (Exception e){
@@ -128,20 +150,20 @@ public class Home_services {
         }
     }
 
-    public Response<ArrayList<Task>> addtodo(String ProjectId,String TodoName){
+    public Response<Task> addtodo(String ProjectId,String TodoName){
         try {
             Log.log.info("req came to (home_ser.addtodo");
-            Response<ArrayList<Task>> res=new Response();
+            Response<Task> res=new Response();
             Optional<Projects> projects=projectsRepo.findById(ProjectId);
             Projects project=projects.get();
             project.genTodo(TodoName);
             projectsRepo.save(project);
             res.setMsg(true);
-            res.setData(project.getTodo());
+            res.setData(project.getTodo().getLast());
             res.setMessage("todo bn gya");
             return res;
         }catch(Exception e){
-            Response<ArrayList<Task>> res = new Response<>();
+            Response<Task> res = new Response<>();
             res.setMsg(false);
             res.setMessage(e.getMessage());
             Log.log.error(e.getMessage());
@@ -149,24 +171,25 @@ public class Home_services {
         }
     }
 
-    public Response<Projects> changeArea(String ProjectId,String todo,String TodoId,String drop,String DragStart){
+    public Response<Projects> changeArea(String ProjectId,Task todo,String TodoId,String drop,String DragStart){
         try{
             Log.log.info("req came to (home_ser.changeArea");
             Response<Projects> res=new Response();
             Optional<Projects> projects = projectsRepo.findById(ProjectId);
             Projects project=projects.get();
-            if(DragStart.equals("Todo")){
+
+            if(DragStart.equals("todo")){
                 project.removeTodo(TodoId);
-                if(drop.equals("Prog")){project.setProg(todo,TodoId);}
-                if(drop.equals("Done")){project.setDone(todo,TodoId);}
-            } else if (DragStart.equals("Prog")) {
+                if(drop.equals("inprogress")){project.tempProg(todo);}
+                if(drop.equals("done")){project.tempDone(todo);}
+            } else if (DragStart.equals("inprogress")) {
                 project.removeProg(TodoId);
-                if(drop.equals("Todo")){project.setTodo(todo,TodoId);}
-                if(drop.equals("Done")){project.setDone(todo,TodoId);}
-            } else if (DragStart.equals("Done")) {
+                if(drop.equals("todo")){project.tempTodo(todo);}
+                if(drop.equals("done")){project.tempDone(todo);}
+            } else if (DragStart.equals("done")) {
                 project.removeDone(TodoId);
-                if(drop.equals("Todo")){project.setTodo(todo,TodoId);}
-                if(drop.equals("Prog")){project.setProg(todo,TodoId);}
+                if(drop.equals("todo")){project.tempTodo(todo);}
+                if(drop.equals("inprogress")){project.tempProg(todo);}
             }
             projectsRepo.save(project);
             res.setMsg(true);
@@ -180,6 +203,69 @@ public class Home_services {
             Log.log.error(e.getMessage());
             return res;
 
+        }
+    }
+
+    public Response<Projects> Add_AssignMember(String ProjectId,String TodoId,String MemberName ,String MemberId){
+        Log.log.info("req came to (home_ser.Add_AssignMember");
+        try{
+            Response<Projects> res=new Response<Projects>();
+            Optional<Projects> projects=projectsRepo.findById(ProjectId);
+            Projects project=projects.get();
+
+            ArrayList<Task>todos=project.getTodo();
+            ArrayList<Task>InProg=project.getProg();
+            ArrayList<Task>Done=project.getDone();
+
+            for(Task task:todos){
+                if(TodoId.equals(task.getId().toString())){
+                    task.addMember(MemberId);
+                }
+            }
+            for(Task task:InProg){
+                if(MemberId.equals(task.getId().toString())){
+                    task.addMember(MemberId);
+                }
+            }
+            for(Task task:Done){
+                if(MemberId.equals(task.getId().toString())){
+                    task.addMember(MemberId);
+                }
+            }
+            projectsRepo.save(project);
+            res.setMsg(true);
+            res.setData(project);
+            res.setMessage("assign members");
+            return res;
+        }catch (Exception e){
+            Response<Projects> res = new Response<Projects>();
+            res.setMsg(false);
+            res.setMessage(e.getMessage());
+            Log.log.error(e.getMessage());
+            return res;
+        }
+    }
+
+    public Response DeleteTodo(Task todo,String ProjectId,String zone){
+        try{
+            Log.log.info("req came to (home_ser.DeleteTodo");
+            Optional<Projects> projects=projectsRepo.findById(ProjectId);
+            Projects project=projects.get();
+            if(zone.equals("todo")){project.removeTodo(todo.getId());}
+            if (zone.equals("inprogress")) {project.removeProg(todo.getId());}
+            if (zone.equals("done")) {project.removeDone(todo.getId());}
+            Response res=new Response();
+            projectsRepo.save(project);
+            res.setMsg(true);
+            res.setData(project);
+            res.setMessage("todo ta ta ");
+            return res;
+        }catch(Exception e){
+            Response res=new Response();
+            res.setMsg(false);
+            res.setMessage(e.getMessage());
+            Log.log.error(e.getMessage());
+            return res;
         }
     }
 

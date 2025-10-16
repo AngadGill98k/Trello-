@@ -1,0 +1,48 @@
+.workspace_head{
+    height: 6%;
+    background-color: lightcoral;
+}
+.headings{
+    display: flex;
+    flex-direction: row;
+    background-color: lightsalmon;
+    box-sizing: border-box;
+    height: 6.8%;
+    h3{
+        box-sizing: border-box;
+        background-color: lightskyblue;
+        text-align: center;
+        width: 33%;
+    }
+    
+}
+
+
+.DropZone{
+    height: 87.2%;
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: row;
+    .TodoDrop{
+        width: 33%;
+        height: 100%;
+        background-color: lime;
+    }
+    .InProgDrop{
+        width: 33%;
+        height: 100%;
+        background-color: orangered;
+    }
+    .DoneDrop{
+        width: 33%;
+        height: 100%;
+        background-color: yellowgreen;
+    }
+    ul{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: inherit;
+    }
+}
+
