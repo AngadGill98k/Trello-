@@ -10,7 +10,7 @@ public class Projects {
     @Id
     private String id;
     private String name;
-    private ArrayList<String> members = new ArrayList<>();
+    private ArrayList<Member> members = new ArrayList<>();
 
     private ArrayList<Task> todo=new ArrayList<>();
     private ArrayList<Task> prog=new ArrayList<>();
@@ -22,7 +22,7 @@ public class Projects {
     public String getName(){
         return name;
     }
-    public ArrayList<String> getMembers(){
+    public ArrayList<Member> getMembers(){
         return members;
     }
     public ArrayList<Task> getTodo(){
@@ -39,7 +39,7 @@ public class Projects {
     public void setName(String name) {
         this.name = name;
     }
-    public void setMembers(String member) {
+    public void setMembers(Member member) {
         this.members.add(member);
     }
 
@@ -88,5 +88,24 @@ public class Projects {
     }
     public void tempDone(Task todo){
         this.done.add(todo);
+    }
+
+    public Task SearchTask(String todoid){
+        for(Task task:this.todo){
+            if(task.getId().equals(todoid)){
+                return task;
+            }
+        }
+        for(Task task:this.prog){
+            if(task.getId().equals(todoid)){
+                return task;
+            }
+        }
+        for(Task task:this.done){
+            if(task.getId().equals(todoid)){
+                return task;
+            }
+        }
+        return null;
     }
 }

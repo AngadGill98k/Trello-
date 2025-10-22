@@ -7,10 +7,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Service } from '../service';
 import { Workspace } from "../workspace/workspace";
+import { TaskModal } from "../../task-modal/task-modal";
 
 @Component({
   selector: 'app-home',
-  imports: [Navbar, Projects, Search, Request, CommonModule, FormsModule, Workspace],
+  imports: [Navbar, Projects, Search, Request, CommonModule, FormsModule, Workspace, TaskModal],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })

@@ -79,4 +79,15 @@ export class Service {
     setCurrentProject(project:any){
         this.CurrentProject.set(project);
     }
+
+
+    ShowModal:WritableSignal<any>=signal(false);
+    ModalInfo:WritableSignal<any>=signal({});
+    showModal(todo:any){
+        this.ShowModal.set(true)
+        this.ModalInfo.set(todo);
+    }
+    closeModal(){
+        this.ShowModal.set(false);
+    }
 }

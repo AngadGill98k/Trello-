@@ -4,23 +4,36 @@
     flex-direction: row;
 }
 .home_left{
-    background-color: lightblue;
+    
     width: 15%;
     
     .home_buttons{
         display: flex;
         flex-direction: row;
-        background-color: bisque;
+        background: none;
         justify-content: space-between;
         height: 5%;
+        background-color: rgb(41, 41, 41);
         button{
+            background: none;
             width: 33%;
+            color: white;
+            
+        }
+        button:last-child{
+            border-right: 0px;
+        }
+        button:first-child{
+            border-left: 0px;
+        }
+        button:hover{
+            background-color: rgb(70, 70, 70);
         }
     }
 
 
     .home_content{
-        background-color: lime;
+        background-color: rgb(46, 45, 45);
         height: 95%;
         box-sizing: border-box;
         app-projects, app-search, app-request{
@@ -28,7 +41,7 @@
             height: 100%;
             padding-top: 18.720px;
             
-            background-color: rgb(255, 166, 0);
+            
             box-sizing: border-box;
         }
     }
@@ -37,6 +50,7 @@
 .home_right{
     background-color: lightgrey;
     width: 85%;
+    height: 96vh;
 }
 app-workspace{
     display: block;

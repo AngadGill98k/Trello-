@@ -2,49 +2,95 @@
         <input [(ngModel)]="newTask" (keydown.enter)="AddTask()" placeholder="New Task" />
         <input [(ngModel)]="friend" placeholder="Add People" />
 </div>
+<div style="display: flex;flex-direction: row;height: 95%;width: 100%;">
+        <div style="display: flex;flex-direction: column;height: 100%;width: 75%;">
+                <div class="headings">
+                        <h3 style="background-color: rgb(131, 138, 131);">TODO</h3>
+                        <h3 style="background-color: rgb(255, 239, 170);">IN-PROGRESS</h3>
+                        <h3 style="background-color: rgb(152, 199, 154);">DONE</h3>
+                </div>
 
-<div class="headings">
-    <h3>TODO</h3>
-    <h3>IN-PROGRESS</h3>
-    <h3>DONE</h3>
-</div>
-<div class="DropZone">
-        <div class="TodoDrop">
-                @if (todos.length>=0) {
-                        <ul (dragover)="dragOver($event)" (dragleave)="dragLeave($event)" (drop)="drop($event, 'todo')">
-                        @for (todo of todos;track todo.id) {
-                                <li draggable="true" (dragstart)="dragStart($event, todo,'todo')" (dragend)="dragEnd($event)" >
-                                     <span>{{todo.name}}</span><button (click)="DeleteTodo(todo,'todo')">X</button>   
-                                </li>
-                        }
-                        </ul>
-                }
+
+                <div class="DropZone">
+                        <div class="TodoDrop">
+                                @if (todos.length>=0) {
+                                <ul (dragover)="dragOver($event,'todo')" (dragleave)="dragLeave($event)"
+                                        (drop)="drop($event, 'todo')">
+                                        @for (todo of todos;track todo.id) {
+                                        <li draggable="true" (dragstart)="dragStart($event, todo,'todo')"
+                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
+                                                <div style="display: flex; gap: 5px;justify-content: end;">
+                                                        <button (click)="DeleteTodo(todo,'todo')">X</button>
+                                                        <span></span>
+                                                </div>
+
+                                                <span>{{todo.name}}</span>
+
+                                                <div style="display: flex;justify-content: end;"> <button
+                                                                (click)="Assignment(todo)">Assign</button>
+                                                </div>
+                                        </li>
+
+                                        }
+                                </ul>
+                                }
+                        </div>
+
+
+                        <div class="InProgDrop">
+                                @if (inprogress.length>=0) {
+                                <ul (dragover)="dragOver($event,'inprogress')" (dragleave)="dragLeave($event)"
+                                        (drop)="drop($event, 'inprogress')">
+                                        @for (todo of inprogress;track todo.id) {
+                                        <li draggable="true" (dragstart)="dragStart($event, todo,'inprogress')"
+                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
+                                                <div style="display: flex; gap: 5px;justify-content: end;">
+                                                        <button (click)="DeleteTodo(todo,'inprogress')">X</button>
+                                                        <span></span>
+                                                </div>
+
+                                                <span>{{todo.name}}</span>
+
+                                                <div style="display: flex;justify-content: end;">
+                                                        <button (click)="Assignment(todo)">Assign</button>
+                                                </div>
+                                        </li>
+
+                                        }
+                                </ul>
+                                }
+                        </div>
+
+
+                        <div class="DoneDrop">
+                                @if (done.length>=0) {
+                                <ul (dragover)="dragOver($event,'done')" (dragleave)="dragLeave($event)"
+                                        (drop)="drop($event, 'done')">
+                                        @for (todo of done;track todo.id) {
+                                        <li draggable="true" (dragstart)="dragStart($event, todo,'done')"
+                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
+                                                <div style="display: flex; gap: 5px;justify-content: end;">
+                                                        <button (click)="DeleteTodo(todo,'done')">X/opyions</button>
+                                                        <span></span>
+                                                </div>
+
+                                                <span>{{todo.name}}</span>
+
+                                                <div style="display: flex;justify-content: end;"> <button
+                                                                (click)="Assignment(todo)">Assign</button>
+                                                </div>
+                                        </li>
+
+
+                                        }
+                                </ul>
+                                }
+                        </div>
+                </div>   
         </div>
 
 
-        <div class="InProgDrop">
-                @if (inprogress.length>=0) {
-                        <ul (dragover)="dragOver($event)" (dragleave)="dragLeave($event)" (drop)="drop($event, 'inprogress')">
-                        @for (todo of inprogress;track todo.id) {
-                                <li draggable="true" (dragstart)="dragStart($event, todo,'inprogress')" (dragend)="dragEnd($event)" >
-                                     <span>{{todo.name}}</span><button (click)="DeleteTodo(todo,'inprogress')">X</button>   
-                                </li>
-                                
-                        }
-                        </ul>
-                }
-        </div>
-        
-        
-        <div class="DoneDrop">
-                @if (done.length>=0) {
-                        <ul (dragover)="dragOver($event)" (dragleave)="dragLeave($event)" (drop)="drop($event, 'done')">
-                        @for (todo of done;track todo.id) {
-                                <li draggable="true" (dragstart)="dragStart($event, todo,'done')" (dragend)="dragEnd($event)">
-                                     <span>{{todo.name}}</span><button (click)="DeleteTodo(todo,'done')">X</button>     
-                                </li>
-                        }
-                        </ul>
-                }
+        <div class="info">
+a               
         </div>
 </div>

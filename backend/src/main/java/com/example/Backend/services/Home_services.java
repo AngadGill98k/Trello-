@@ -3,6 +3,7 @@ package com.example.Backend.services;
 import com.example.Backend.config.Log;
 import com.example.Backend.dto.Project_dto;
 import com.example.Backend.dto.Response;
+import com.example.Backend.models.Member;
 import com.example.Backend.models.Projects;
 import com.example.Backend.models.Task;
 import com.example.Backend.models.User;
@@ -72,7 +73,10 @@ public class Home_services {
             User user=optuser.get();
             Projects projects=new Projects();
             projects.setName(project.getName());
-            projects.setMembers(userid);
+            Member member=new Member();
+            member.setId(userid);
+            member.setName(user.getName());
+            projects.setMembers(member);
             user.setProjetcs(projects);
 
             projectsRepo.save(projects);
@@ -206,6 +210,29 @@ public class Home_services {
         }
     }
 
+    public Response add_member(String ProjectId,String MemberName,String MemberId,String zone){
+        try {
+            Log.log.info("req came to (home_ser.add_member");
+            Optional<Projects> projects=projectsRepo.findById(ProjectId);
+            Projects project=projects.get();
+            Member member=new Member();
+            member.setId(MemberId);
+            member.setName(MemberName);
+            project.setMembers(member);
+            Response res=new Response();
+            res.setMsg(true);
+            res.setData(project);
+            res.setMessage("member added");
+            return res;
+        }catch (Exception e){
+            Response res = new Response();
+            res.setMsg(false);
+            res.setMessage(e.getMessage());
+            Log.log.error(e.getMessage());
+            return res;
+        }
+    }
+
     public Response<Projects> Add_AssignMember(String ProjectId,String TodoId,String MemberName ,String MemberId){
         Log.log.info("req came to (home_ser.Add_AssignMember");
         try{
@@ -216,20 +243,22 @@ public class Home_services {
             ArrayList<Task>todos=project.getTodo();
             ArrayList<Task>InProg=project.getProg();
             ArrayList<Task>Done=project.getDone();
-
+            Member member=new Member();
+            member.setId(MemberId);
+            member.setName(MemberName);
             for(Task task:todos){
                 if(TodoId.equals(task.getId().toString())){
-                    task.addMember(MemberId);
+                    task.addMember(member);
                 }
             }
             for(Task task:InProg){
                 if(MemberId.equals(task.getId().toString())){
-                    task.addMember(MemberId);
+                    task.addMember(member);
                 }
             }
             for(Task task:Done){
                 if(MemberId.equals(task.getId().toString())){
-                    task.addMember(MemberId);
+                    task.addMember(member);
                 }
             }
             projectsRepo.save(project);

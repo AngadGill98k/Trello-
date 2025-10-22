@@ -91,55 +91,46 @@ export class Workspace implements OnInit {
   dragEnd(event:DragEvent) {
     (event.currentTarget as HTMLElement).style.opacity = '1';
   }
-  dragOver(event:DragEvent) {
+  dragOver(event:DragEvent,zone:String) {
     event.preventDefault(); 
-    (event.currentTarget as HTMLElement).style.background = '#e0ffe0';
+    if(zone==='todo'){
+    (event.currentTarget as HTMLElement).style.background = 'rgba(221, 233, 221, 0.42)';
+    }
+    if(zone==='inprogress'){
+    (event.currentTarget as HTMLElement).style.background = '#ffffe0';
+    }
+    if(zone==='done'){
+    (event.currentTarget as HTMLElement).style.background = ' rgba(149, 245, 152, 1)';
+    }
   }
   dragLeave(event:DragEvent) {
     (event.currentTarget as HTMLElement).style.background = '';
   }
-  drop(event:DragEvent, listType: string) {
-    event.preventDefault();
-    (event.currentTarget as HTMLElement).style.background = '';
-    let data=JSON.parse(event.dataTransfer?.getData("text/plain") || '{}');
-    console.log("drop",event,data,listType);
-
-    if(listType==='todo'){
-      this.todos.push(this.todos);
-      if(data.zone==='inprogress'){
-        this.FetchChange(data.zone,listType,data.todo);
-        this.inprogress=this.inprogress.filter(item=>item.id!==data.todo.id);
-      }
-      if(data.zone==='done'){
-        this.FetchChange(data.zone,listType,data.todo);
-        this.done=this.done.filter(item=>item.id!==data.todo.id);
-      }
-    }
-    if(listType==='inprogress'){
-      this.inprogress.push(this.inprogress);
-      if(data.zone==='todo'){
-        console.log("asdasd")
-        this.FetchChange(data.zone,listType,data.todo);
-        this.todos=this.todos.filter(item=>item.id!==data.todo.id);
-      }
-      if(data.zone==='done'){
-        this.FetchChange(data.zone,listType,data.todo);
-        this.done=this.done.filter(item=>item.id!==data.todo.id);
-      }
-    }
-    if(listType==='done'){
-      this.done.push(this.done);
-      if(data.zone==='todo'){
-        this.FetchChange(data.zone,listType,data.todo);
-        this.todos=this.todos.filter(item=>item.id!==data.todo.id);
-      }
-      if(data.zone==='inprogress'){
-        this.FetchChange(data.zone,listType,data.todo);
-
-        this.inprogress=this.inprogress.filter(item=>item.id!==data.todo.id);
-      }
-    }
+  drop(event: DragEvent, listType: string) {
+  event.preventDefault();
+  (event.currentTarget as HTMLElement).style.background = '';
+  const data = JSON.parse(event.dataTransfer?.getData("text/plain") || '{}');
+  console.log("drop", event, data, listType);
+  const dragged = data.todo;
+  const from = data.zone;
+  const to = listType;
+  this.FetchChange(from, to, dragged);
+  if (from === 'todo') this.todos = this.todos.filter(t => t.id !== dragged.id);
+  if (from === 'inprogress') this.inprogress = this.inprogress.filter(t => t.id !== dragged.id);
+  if (from === 'done') this.done = this.done.filter(t => t.id !== dragged.id);
+  if (to === 'todo') this.todos = [...this.todos, dragged];
+  if (to === 'inprogress') this.inprogress = [...this.inprogress, dragged];
+  if (to === 'done') this.done = [...this.done, dragged];
+  this.service.CurrentProject.update(project => ({
+    ...project,
+    todo: this.todos,
+    prog: this.inprogress,
+    done: this.done
+  }));
   }
+
+
+
   FetchChange(zone:String,drop:String,todo:any){
     console.log(todo,zone,drop);
     
@@ -162,6 +153,7 @@ export class Workspace implements OnInit {
     })
   }
 
+
   DeleteTodo(todo:any,zone:String){
     console.log("workspace.DeleteTodo",zone,todo);
     fetch('http://localhost:8080/delete_todo',{
@@ -180,13 +172,45 @@ export class Workspace implements OnInit {
       if(data.msg){
         if(zone==='todo'){
           this.todos=this.todos.filter(item=>item.id!==todo.id);
+          this.service.CurrentProject.update((project)=>{
+            return{
+              ...project,
+              todo:this.todos,
+              prog:this.inprogress,
+              done:this.done
+            }
+          })
         }
         if(zone==='inprogress'){
           this.inprogress=this.inprogress.filter(item=>item.id!==todo.id);
+          this.service.CurrentProject.update((project)=>{
+            return{
+              ...project,
+              todo:this.todos,
+              prog:this.inprogress,
+              done:this.done
+            }
+          })
         }
         if(zone==='done'){
           this.done=this.done.filter(item=>item.id!==todo.id);
+          this.service.CurrentProject.update((project)=>{
+            return{
+              ...project,
+              todo:this.todos,
+              prog:this.inprogress,
+              done:this.done
+            }
+          })
         }
       }})
   }
+
+
+  Assignment(todo:any){
+
+  }
+  OpenModal(todo:any){
+    this.service.showModal(todo);
+  }  
 }

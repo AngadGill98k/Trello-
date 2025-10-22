@@ -1,0 +1,23 @@
+@if(service.ShowModal()) {
+<div class="modal_container " (click)="CloseModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <button (click)="CloseModal()">X</button>
+        <h3>Assisgned to:</h3>
+        <ul>
+        @for(member of AlreadyAssigned(); track member) {
+            <li>{{member.name}}</li>
+        }
+        </ul>
+
+
+        <h3>Assign to:</h3>
+        <ul>
+        @for(member of Assign(); track member) {
+            <li (click)="AssignTask(member)">{{member.name}}</li>
+        }
+        </ul>
+        
+    </div>
+
+</div>
+}

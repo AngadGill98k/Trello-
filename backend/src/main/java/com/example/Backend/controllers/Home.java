@@ -4,6 +4,7 @@ import com.example.Backend.config.Jwt;
 import com.example.Backend.config.Log;
 import com.example.Backend.dto.Project_dto;
 import com.example.Backend.dto.Response;
+import com.example.Backend.models.Member;
 import com.example.Backend.models.Projects;
 import com.example.Backend.models.Task;
 import com.example.Backend.models.User;
@@ -91,6 +92,18 @@ public class Home {
         String to= body.getTo();
         Log.log.info(""+projectid + " " + todo.getName() + " " + to);
         Response res=homeServices.DeleteTodo(todo,projectid,to);
+        return res;
+    }
+
+    @PostMapping("/AssignMember")
+    public Response assignmeber(@RequestBody Project_dto body){
+        String projectid=body.getId();
+        String todoid=body.getTask().getId();
+        ArrayList<Member> members=body.getMembers();
+        Member member=members.get(0);
+        String memberid=member.getId();
+        String membername=member.getName();
+        Response res=homeServices.Add_AssignMember(projectid,todoid,membername,memberid);
         return res;
     }
 

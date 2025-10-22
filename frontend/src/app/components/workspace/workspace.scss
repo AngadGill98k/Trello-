@@ -1,48 +1,151 @@
 .workspace_head{
-    height: 6%;
-    background-color: lightcoral;
+    height: 5%;
+    background-color: rgb(56, 56, 56);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 10px;
+    input{
+        background-color: lightgoldenrodyellow;
+        border: none;
+        border-radius: 10px;
+        height: 70%;
+        padding-left: 10px;
+    }
 }
 .headings{
-    display: flex;
-    flex-direction: row;
-    background-color: lightsalmon;
+    
+    background-color: rgb(255, 255, 255);
     box-sizing: border-box;
     height: 6.8%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     h3{
+        
         box-sizing: border-box;
-        background-color: lightskyblue;
-        text-align: center;
-        width: 33%;
+        // background-color: lightskyblue;
+        margin: 0;
+        height: 100%;
+        width: 33.33%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
     }
     
 }
 
 
 .DropZone{
-    height: 87.2%;
-    background-color: aquamarine;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     .TodoDrop{
-        width: 33%;
+        width: 33.33%;
         height: 100%;
-        background-color: lime;
+        background-color: rgba(131, 138, 131, 0.425);
+        li{
+            background-color: rgba(82, 81, 77, 0.37);
+            height: auto;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 5px solid black;
+            border-radius: 7px;
+
+
+            display: flex;
+            flex-direction: column;
+
+
+            div{
+                span{
+                    display: inline-block;
+                    background-color: rgb(108, 114, 108);
+                    border-radius: 40px;
+                    height: 10px;
+                    width: 10px;
+                    border: 3px solid black;
+                }
+            }
+        }
     }
     .InProgDrop{
-        width: 33%;
+        width: 33.33%;
         height: 100%;
-        background-color: orangered;
+        background-color: rgba(250, 225, 157, 0.822);
+        li{
+            background-color: rgb(252, 242, 199);
+            height: auto;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 5px solid rgb(255, 204, 93);
+            border-radius: 7px;
+
+
+            display: flex;
+            flex-direction: column;
+
+
+            div{
+                span{
+                    display: inline-block;
+                    background-color: rgb(252, 229, 127);
+                    border-radius: 40px;
+                    height: 10px;
+                    width: 10px;
+                    border: 3px solid rgb(255, 209, 110);
+                }
+            }
+        }
     }
     .DoneDrop{
-        width: 33%;
+        width: 33.33%;
         height: 100%;
-        background-color: yellowgreen;
+        // rgb(195, 209, 167); for the li
+        background-color: rgb(148, 190, 149);
+        li{
+            background-color: rgb(227, 252, 190);
+            height: auto;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 5px solid rgb(140, 252, 130);
+            border-radius: 7px;
+
+
+            display: flex;
+            flex-direction: column;
+
+
+            div{
+                span{
+                    display: inline-block;
+                    background-color: rgb(212, 252, 152);
+                    border-radius: 40px;
+                    height: 10px;
+                    width: 10px;
+                    border: 3px solid rgb(183, 248, 84);
+                }
+            }
+        }
     }
     ul{
         list-style-type: none;
         padding: 0;
         margin: 0;
         height: inherit;
+        padding: 10px 10px 0px 10px;
+        box-sizing: border-box;
     }
 }
 
+.info{
+    background-color: antiquewhite;
+    height: 100%;
+    width: 25%;
+}

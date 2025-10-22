@@ -7,24 +7,24 @@ import java.util.ArrayList;
 public class Task {
     private String name;
     private String id;
-    private ArrayList<String> assignedto = new ArrayList<>();
+    private ArrayList<Member> assignedto = new ArrayList<>();
     public String getName(){
         return name;
     }
     public String getId(){
         return id;
     }
-    public ArrayList<String> getMembers(){
+    public ArrayList<Member> getMembers(){
         return assignedto;
     }
 
     public  void setName(String name){
         this.name = name;
     }
-    public void setMembers(ArrayList<String> members){
+    public void setMembers(ArrayList<Member> members){
         this.assignedto = members;
     }
-    public void addMember(String member){
+    public void addMember(Member member){
         assignedto.add(member);
     }
     public  void genId(){

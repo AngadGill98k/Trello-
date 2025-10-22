@@ -1,12 +1,15 @@
 h3 {
     margin-top: 0px;
+    padding-left: 10px;
 }
 .add_project{
     display: flex;
     flex-direction: row;
-    background-color: lightpink;
-    
+    background-color: rgb(185, 185, 185);
+    border-radius: 4px;
     height: 4vh;
+    box-sizing: border-box;
+    padding: 10px;
     input{
         width: 70%;
         background: none;
@@ -14,25 +17,27 @@ h3 {
         border-radius: 20px;
         box-sizing: border-box;
         padding-left: 10px;
+        background: none;
     }
     button{
         width: 30%;
+        background: none;
         border: none;
     }
     
 }
 ul{
     list-style: none;
-    background-color: limegreen;
+    
     padding: 0%;
     box-sizing: border-box;
     li{
-        margin-bottom: 2px;
+        margin-bottom: 7px;
         height: 5vh;
         display: flex;
         align-items: center;
         box-sizing: border-box;
         padding-left: 10px;
-        background-color: navajowhite;
+        background-color: rgba(95, 95, 95, 0.932);
     }
 }

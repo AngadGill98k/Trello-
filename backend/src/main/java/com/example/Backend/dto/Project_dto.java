@@ -1,5 +1,6 @@
 package com.example.Backend.dto;
 
+import com.example.Backend.models.Member;
 import com.example.Backend.models.Task;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 public class Project_dto {
     private String id;
     private String name;
-    private ArrayList<String> members = new ArrayList<>();
+    private ArrayList<Member> members = new ArrayList<>();
 
     private ArrayList<Task> todo=new ArrayList<>();
     private ArrayList<Task> prog=new ArrayList<>();
@@ -16,13 +17,14 @@ public class Project_dto {
     private String from;
     private String to;
     private Task task;
+
     public String getId(){
         return id;
     }
     public String getName(){
         return name;
     }
-    public ArrayList<String> getMembers(){
+    public ArrayList<Member> getMembers(){
         return members;
     }
     public ArrayList<Task> getTodo(){
@@ -47,7 +49,7 @@ public class Project_dto {
     public void setName(String name) {
         this.name = name;
     }
-    public void setMembers(String member) {
+    public void setMembers(Member member) {
         this.members.add(member);
     }
 
