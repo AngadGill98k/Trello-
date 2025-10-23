@@ -4,10 +4,7 @@ import com.example.Backend.config.Jwt;
 import com.example.Backend.config.Log;
 import com.example.Backend.dto.Project_dto;
 import com.example.Backend.dto.Response;
-import com.example.Backend.models.Member;
-import com.example.Backend.models.Projects;
-import com.example.Backend.models.Task;
-import com.example.Backend.models.User;
+import com.example.Backend.models.*;
 import com.example.Backend.services.Home_services;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,7 +65,7 @@ public class Home {
         String TodoName= body.getName();
         String ProjectId= body.getId();
         Log.log.info("req came in (home_con.addtodo)");
-        Log.log.info(""+TodoName + " " + ProjectId);
+
         Response<Task> res=homeServices.addtodo(ProjectId,TodoName);
         return res;
     }
@@ -107,4 +104,15 @@ public class Home {
         return res;
     }
 
+    @PostMapping("/addnote")
+    public Response addnote(@CookieValue(value = "token")String refresh_token, @RequestBody Project_dto body){
+        Log.log.info("req came in (home_con.addnote)");
+        String projectid=body.getId();
+        Task task =body.getTask();
+
+        String note=body.getNote1();
+        String userid= jwt.extract_token(refresh_token);
+        Response res=homeServices.AddNote(note,projectid, task,userid);
+        return res;
+    }
 }

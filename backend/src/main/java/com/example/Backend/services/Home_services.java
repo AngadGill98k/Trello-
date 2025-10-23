@@ -3,10 +3,7 @@ package com.example.Backend.services;
 import com.example.Backend.config.Log;
 import com.example.Backend.dto.Project_dto;
 import com.example.Backend.dto.Response;
-import com.example.Backend.models.Member;
-import com.example.Backend.models.Projects;
-import com.example.Backend.models.Task;
-import com.example.Backend.models.User;
+import com.example.Backend.models.*;
 import com.example.Backend.repository.Projects_repo;
 import com.example.Backend.repository.User_repo;
 import org.springframework.stereotype.Service;
@@ -239,32 +236,44 @@ public class Home_services {
             Response<Projects> res=new Response<Projects>();
             Optional<Projects> projects=projectsRepo.findById(ProjectId);
             Projects project=projects.get();
+            for(Member mem:project.getMembers()){
+                if(mem.getId().equals(MemberId)){
+                    ArrayList<Task>todos=project.getTodo();
+                    ArrayList<Task>InProg=project.getProg();
+                    ArrayList<Task>Done=project.getDone();
+                    Member member=new Member();
+                    member.setId(MemberId);
+                    member.setName(MemberName);
+                    Log.log.info(""+ProjectId+" "+TodoId+" "+MemberName+" "+MemberId);
+                    for(Task task:todos){
+                        if(TodoId.equals(task.getId().toString())){
+                            if(task.getMembers().contains(member)){}else{
+                                task.addMember(member);}
+                        }
+                    }
+                    for(Task task:InProg){
+                        if(TodoId.equals(task.getId().toString())){
+                            if(task.getMembers().contains(member)){}else{
+                                task.addMember(member);}
+                        }
+                    }
+                    for(Task task:Done){
+                        if(TodoId.equals(task.getId().toString())){
+                            if(task.getMembers().contains(member)){}else{
+                                task.addMember(member);}
+                        }
+                    }
+                    projectsRepo.save(project);
+                    res.setMsg(true);
+                    res.setData(project);
+                    res.setMessage("assign members");
+                    return res;
 
-            ArrayList<Task>todos=project.getTodo();
-            ArrayList<Task>InProg=project.getProg();
-            ArrayList<Task>Done=project.getDone();
-            Member member=new Member();
-            member.setId(MemberId);
-            member.setName(MemberName);
-            for(Task task:todos){
-                if(TodoId.equals(task.getId().toString())){
-                    task.addMember(member);
                 }
             }
-            for(Task task:InProg){
-                if(MemberId.equals(task.getId().toString())){
-                    task.addMember(member);
-                }
-            }
-            for(Task task:Done){
-                if(MemberId.equals(task.getId().toString())){
-                    task.addMember(member);
-                }
-            }
-            projectsRepo.save(project);
             res.setMsg(true);
             res.setData(project);
-            res.setMessage("assign members");
+            res.setMessage("not members");
             return res;
         }catch (Exception e){
             Response<Projects> res = new Response<Projects>();
@@ -298,4 +307,41 @@ public class Home_services {
         }
     }
 
+    public Response AddNote(String note ,String projectid,Task task,String userid){
+        Log.log.info("req came to (home_ser.AddNote");
+        try {
+            Optional<Projects> projects=projectsRepo.findById(projectid);
+            Optional<User> optionalUser=user_repo.findById(userid);
+            User user= optionalUser.get();
+            Projects project=projects.get();
+            Note note1=new Note(note, user.getName(),userid);
+            for(Task task1:project.getTodo()){
+                if(task1.getId().equals(task.getId().toString())){
+                    task1.AddNote(note1);
+                }
+            }
+            for(Task task2:project.getProg()){
+                if(task2.getId().equals(task.getId().toString())){
+                    task2.AddNote(note1);
+                }
+            }
+            for (Task task3 : project.getDone()) {
+                if(task3.getId().equals(task.getId().toString())){
+                    task3.AddNote(note1);
+                }
+            }
+            Response res=new Response();
+            projectsRepo.save(project);
+            res.setMsg(true);
+            res.setData(project);
+            res.setMessage("note ok ");
+            return res;
+        }catch (Exception e){
+            Response<Projects> res = new Response<>();
+            res.setMsg(false);
+            res.setMessage(e.getMessage());
+            Log.log.error(e.getMessage());
+            return res;
+        }
+    }
 }

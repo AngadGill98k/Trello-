@@ -17,6 +17,7 @@ public class Task {
     public ArrayList<Member> getMembers(){
         return assignedto;
     }
+    private ArrayList<Note> note=new ArrayList<>();
 
     public  void setName(String name){
         this.name = name;
@@ -35,5 +36,18 @@ public class Task {
         this.id = id;
     }
 
-
+    public ArrayList<Note> getNote(){
+        return note;
+    }
+    public void AddNote(Note note){
+        this.note.add(note);
+    }
+    public Note SearchNote(String noteid){
+        for(Note note:this.note){
+            if(note.getId().equals(noteid)){
+                return note;
+            }
+        }
+        return null;
+    }
 }

@@ -20,14 +20,15 @@
                                         <li draggable="true" (dragstart)="dragStart($event, todo,'todo')"
                                                 (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
                                                 <div style="display: flex; gap: 5px;justify-content: end;">
-                                                        <button (click)="DeleteTodo(todo,'todo')">X</button>
+                                                        <button (click)="DeleteTodo(todo,'todo')"
+                                                                (click)="$event.stopPropagation()">X</button>
                                                         <span></span>
                                                 </div>
 
                                                 <span>{{todo.name}}</span>
 
-                                                <div style="display: flex;justify-content: end;"> <button
-                                                                (click)="Assignment(todo)">Assign</button>
+                                                <div style="display: flex;justify-content: end;">
+                                                        <button (click)="Assignment(todo)">Assign</button>
                                                 </div>
                                         </li>
 
@@ -45,7 +46,8 @@
                                         <li draggable="true" (dragstart)="dragStart($event, todo,'inprogress')"
                                                 (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
                                                 <div style="display: flex; gap: 5px;justify-content: end;">
-                                                        <button (click)="DeleteTodo(todo,'inprogress')">X</button>
+                                                        <button (click)="DeleteTodo(todo,'inprogress')"
+                                                                (click)="$event.stopPropagation()">X</button>
                                                         <span></span>
                                                 </div>
 
@@ -70,7 +72,8 @@
                                         <li draggable="true" (dragstart)="dragStart($event, todo,'done')"
                                                 (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
                                                 <div style="display: flex; gap: 5px;justify-content: end;">
-                                                        <button (click)="DeleteTodo(todo,'done')">X/opyions</button>
+                                                        <button (click)="DeleteTodo(todo,'done')"
+                                                                (click)="$event.stopPropagation()">X/opyions</button>
                                                         <span></span>
                                                 </div>
 
@@ -86,11 +89,25 @@
                                 </ul>
                                 }
                         </div>
-                </div>   
+                </div>
         </div>
 
 
         <div class="info">
-a               
+                <div>
+                        <h3>Online Members:</h3>
+                        <ul>
+                                
+                        </ul>
+                </div>
+
+                <div>
+                        <h3>Offline Members:</h3>
+                        <ul>
+                                @for(member of service.OfflineMembers(); track member._id) {
+                                        <li>{{member.name}}</li>
+                                }
+                        </ul>
+                </div>
         </div>
 </div>

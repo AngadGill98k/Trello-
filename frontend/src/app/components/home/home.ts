@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Service } from '../service';
 import { Workspace } from "../workspace/workspace";
 import { TaskModal } from "../../task-modal/task-modal";
+import { Socket } from '../../socket';
 
 @Component({
   selector: 'app-home',
@@ -18,9 +19,10 @@ import { TaskModal } from "../../task-modal/task-modal";
 export class Home implements OnInit{
   ngOnInit(): void {
       this.CurrentProject=this.service.CurrentProject
+      this.socket.connect()
   }
 
-  constructor(private service:Service){
+  constructor(private service:Service,private socket:Socket){
     effect(()=>{
       console.log("Current Project changed:",this.CurrentProject());
     })

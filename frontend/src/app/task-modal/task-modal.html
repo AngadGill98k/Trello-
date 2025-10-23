@@ -1,23 +1,57 @@
 @if(service.ShowModal()) {
 <div class="modal_container " (click)="CloseModal()">
+
     <div class="modal" (click)="$event.stopPropagation()">
-        <button (click)="CloseModal()">X</button>
-        <h3>Assisgned to:</h3>
-        <ul>
-        @for(member of AlreadyAssigned(); track member) {
-            <li>{{member.name}}</li>
-        }
+        <button style="height: 7%;" (click)="CloseModal()">X</button>
+
+
+        <div style="display: flex; flex-direction: row; height: 7%;">
+            <button class="modal_head_button" (click)="toggle = true">Notes</button>
+            <button class="modal_head_button" (click)="toggle = false">Assign</button>
+
+        </div>
+
+        @if(!toggle) {
+        <div style="height: 42.5%; background-color: antiquewhite;">
+            <h3>Assisgned to:</h3>
+            <ul>
+                @for(member of AlreadyAssigned(); track member) {
+                <li>{{member.name}}</li>
+                }
+            </ul>
+        </div>
+
+
+        <div style="height: 42.5%; background-color: antiquewhite;">
+            <h3>Assign to:</h3>
+            <ul>
+                @for(member of Assign(); track member) {
+                <li (click)="AssignTask(member)">{{member.name}}</li>
+                }
+            </ul>
+        </div>
+
+
+        }@else {
+        <ul class="notes">
+            @for(note of notes; track note) {
+            <li class="note">
+                <span>{{note.user}}:</span>
+                {{note.note}}
+            </li>
+            }
         </ul>
 
 
-        <h3>Assign to:</h3>
-        <ul>
-        @for(member of Assign(); track member) {
-            <li (click)="AssignTask(member)">{{member.name}}</li>
+        <div style="display: flex;flex-direction: row;margin-top: 10px;background-color: aqua;height: 10%;">
+            <input style="width: 80%;" type="text" [(ngModel)]="note" (keydown.enter)="SendNote()">
+            <button style="width: 20%;" (click)="SendNote()">send</button>
+        </div>
         }
-        </ul>
-        
+
+
     </div>
+
 
 </div>
 }

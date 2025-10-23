@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, effect, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Service } from '../service';
+import { Socket } from '../../socket';
 
 @Component({
   selector: 'app-workspace',
@@ -17,7 +18,7 @@ export class Workspace implements OnInit {
   
   csrftoken: string = "";
   accesstoken: string = "";
-  constructor(private service:Service){
+  constructor(protected service:Service,private socket:Socket){
     //effetc() to litn to teh signal
     effect(()=>{
     this.projectid=this.service.CurrentProject()?.id||"";
@@ -35,7 +36,7 @@ export class Workspace implements OnInit {
   AddTask(){
     console.log("workspace.AddTask",this.projectid,this.newTask);
     if(this.newTask.length<=0){return;}
-    
+    console.log(this.accesstoken);
     fetch('http://localhost:8080/add_todo',{
       method:'POST',
       headers:{ 
@@ -50,6 +51,7 @@ export class Workspace implements OnInit {
     .then(data=>{
       console.log(data);
       if(data.msg){
+        this.socket.TodoAdd(this.projectid,data.data);
         this.service.CurrentProject.update(project=>({
           ...project,
           todo:[...project.todo,data.data]
@@ -127,6 +129,7 @@ export class Workspace implements OnInit {
     prog: this.inprogress,
     done: this.done
   }));
+  this.socket.TodoDrop(this.projectid, dragged, from, to);
   }
 
 
@@ -204,6 +207,7 @@ export class Workspace implements OnInit {
           })
         }
       }})
+    this.socket.TodoDelete(this.projectid,todo,zone);
   }
 
 

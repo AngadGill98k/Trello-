@@ -1,6 +1,7 @@
 package com.example.Backend.dto;
 
 import com.example.Backend.models.Member;
+import com.example.Backend.models.Note;
 import com.example.Backend.models.Task;
 
 import java.util.ArrayList;
@@ -14,10 +15,19 @@ public class Project_dto {
     private ArrayList<Task> prog=new ArrayList<>();
     private ArrayList<Task> done=new ArrayList<>();
 
+    private ArrayList<Note> note=new ArrayList<>();
+
     private String from;
     private String to;
     private Task task;
+    private String note1;
 
+    public String getNote1(){
+        return note1;
+    }
+    public void setNote1(String note1){
+        this.note1 = note1;
+    }
     public String getId(){
         return id;
     }
@@ -45,6 +55,9 @@ public class Project_dto {
     public Task getTask(){
         return task;
     }
+    public ArrayList<Note> getNote(){
+        return note;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -59,7 +72,9 @@ public class Project_dto {
         task.genId();
         this.todo.add(task);
     }
-
+    public void AddNote(Note note){
+        this.note.add(note);
+    }
     public void setTodo(String todo,String todoid) {
         Task task=new Task();
         task.setName(todo);
@@ -92,6 +107,10 @@ public class Project_dto {
             }
         }
     }
+    public void setNote(Note note){
+        this.note.add(note);
+    }
+
     public void removeProg(String prog) {
         ArrayList<Task> todos=this.prog;
         for (Task task:todos) {
@@ -107,5 +126,13 @@ public class Project_dto {
                 this.todo.remove(task);
             }
         }
+    }
+    public Note SearchNote(String noteid){
+        for(Note note:this.note){
+            if(note.getId().equals(noteid)){
+                return note;
+            }
+        }
+        return null;
     }
 }

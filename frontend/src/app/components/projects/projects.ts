@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Service } from '../service';
+import { Socket } from '../../socket';
 
 @Component({
   selector: 'app-projects',
@@ -14,7 +15,7 @@ export class Projects implements OnInit {
   projects_list: WritableSignal<any[]> = signal([]);
   csrftoken: string = "";
   accesstoken: string = "";
-  constructor(private service: Service) { }
+  constructor(private service: Service,private  socket:Socket) { }
   ngOnInit(): void {
     this.csrftoken = this.service.get_csrf() || "";
     this.accesstoken = this.service.access_token || "";
@@ -83,7 +84,11 @@ export class Projects implements OnInit {
       .then(data => {
         console.log(data);
         if (data.msg) {
+          if(this.service.CurrentProject().id){
+            this.socket.LeaveRoom(this.service.CurrentProject().id);
+          }
           this.service.setCurrentProject(data.data);
+          this.socket.JoinRoom(data.data.id);
         }
       }
       )

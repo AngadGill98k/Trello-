@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
@@ -90,4 +90,7 @@ export class Service {
     closeModal(){
         this.ShowModal.set(false);
     }
+
+    OnlineMembers:any[]=[];
+    OfflineMembers:Signal<any[]>=computed(()=>{return this.CurrentProject()?.members || []});
 }

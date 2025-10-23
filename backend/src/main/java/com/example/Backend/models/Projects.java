@@ -16,6 +16,7 @@ public class Projects {
     private ArrayList<Task> prog=new ArrayList<>();
     private ArrayList<Task> done=new ArrayList<>();
 
+
     public String getId(){
         return id;
     }
@@ -49,6 +50,7 @@ public class Projects {
      task.genId();
      this.todo.add(task);
     }
+
 
     public void setTodo(String todo,String todoid) {
         Task task=new Task();
@@ -108,4 +110,5 @@ public class Projects {
         }
         return null;
     }
+
 }
