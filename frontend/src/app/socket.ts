@@ -141,12 +141,110 @@ export class Socket {
         console.log("A user has joined the room:", roomid);
         
       }
+
+
+      if(data.action=="AssignMember"){
+        console.log("Handling AssignMember:", data);
+        this.service.CurrentProject.update((project)=>{
+          let task=data.task;
+          let member=data.member;
+          let todo=this.service.CurrentProject().todo.map((t:any)=>{
+            if(t.id==task.id){
+              return{
+                ...t,
+                members:[...t.members,member]
+              }
+            }
+            return t;
+          })
+          let prog=this.service.CurrentProject().prog.map((t:any)=>{
+            if(t.id==task.id){
+              return{
+                ...t,
+                members:[...t.members,member]
+              }
+            }
+            return t;
+          })
+          let done=this.service.CurrentProject().done.map((t:any)=>{
+            if(t.id==task.id){
+              return{
+                ...t,
+                members:[...t.members,member]
+              }
+            }
+            return t;
+          })
+          return{
+            ...project,
+            todo,
+            prog,
+            done
+          }
+        })
+
+      }
+
+      if(data.action=="NoteAdd"){
+        console.log("Handling NoteAdd:", data);
+        if(data.to=="todo"){
+          let todo=this.service.CurrentProject().todo.map((t:any)=>{
+            if(t.id==data.task.id){
+              return{
+                ...t,
+                note:[...t.note,data.note]
+              }
+            }
+            return t;
+          })
+          this.service.CurrentProject.update((project)=>{
+            return{
+              ...project,
+              todo
+            }
+          })
+        }
+        if(data.to=="inprogress"){
+          let prog=this.service.CurrentProject().prog.map((t:any)=>{
+            if(t.id==data.task.id){
+              return{
+                ...t,
+                note:[...t.note,data.note]
+              }
+            }
+            return t;
+          })
+          this.service.CurrentProject.update((project)=>{
+            return{
+              ...project,
+              prog
+            }
+          })
+        }
+        if(data.to=="done"){
+          let done=this.service.CurrentProject().done.map((t:any)=>{
+            if(t.id==data.task.id){
+              return{
+                ...t,
+                note:[...t.note,data.note]
+              }
+            }
+            return t;
+          })
+          this.service.CurrentProject.update((project)=>{
+            return{
+              ...project,
+              done
+            }
+          })
+        }
+      }
     })
-    this.stompClient.publish({
-      destination: "/app/online/" + roomid,
-      body: JSON.stringify({ action: "JoinRoom" }),
-      headers: { Authorization: `Bearer ${this.service.access_token}` }
-    })
+    // this.stompClient.publish({
+    //   destination: "/app/online/" + roomid,
+    //   body: JSON.stringify({ action: "JoinRoom" }),
+    //   headers: { Authorization: `Bearer ${this.service.access_token}` }
+    // })
     console.log("Joined room:", roomid);
   }
 
@@ -179,6 +277,21 @@ export class Socket {
     })
   }
 
+  AssignMember(roomid:String,task:any,member:any){
+    console.log("Sending AssignMember to room:", roomid, task, member);
+    this.stompClient.publish({
+      destination: "/app/assign_member/" + roomid,
+      body: JSON.stringify({ task, member, action: "AssignMember" })
+    })
+  }
+
+  NoteAdd(roomid:String,task:any,note:any,zone:string){
+    console.log("Sending NoteAdd to room:", roomid, task, note);
+    this.stompClient.publish({
+      destination: "/app/add_note/" + roomid,
+      body: JSON.stringify({ task, note, action: "NoteAdd",to:zone })
+    })
+  }
   disconnect() {
     this.stompClient.deactivate();
     console.log('❌ Disconnected');

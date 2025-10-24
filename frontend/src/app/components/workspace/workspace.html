@@ -1,6 +1,6 @@
 <div class="workspace_head">
         <input [(ngModel)]="newTask" (keydown.enter)="AddTask()" placeholder="New Task" />
-        <input [(ngModel)]="friend" placeholder="Add People" />
+        <input [(ngModel)]="friend" placeholder="Add People" (keydown.enter)="Addpeople()" />
 </div>
 <div style="display: flex;flex-direction: row;height: 95%;width: 100%;">
         <div style="display: flex;flex-direction: column;height: 100%;width: 75%;">
@@ -18,7 +18,7 @@
                                         (drop)="drop($event, 'todo')">
                                         @for (todo of todos;track todo.id) {
                                         <li draggable="true" (dragstart)="dragStart($event, todo,'todo')"
-                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
+                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo,'todo')">
                                                 <div style="display: flex; gap: 5px;justify-content: end;">
                                                         <button (click)="DeleteTodo(todo,'todo')"
                                                                 (click)="$event.stopPropagation()">X</button>
@@ -44,7 +44,7 @@
                                         (drop)="drop($event, 'inprogress')">
                                         @for (todo of inprogress;track todo.id) {
                                         <li draggable="true" (dragstart)="dragStart($event, todo,'inprogress')"
-                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
+                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo,'inprogress')">
                                                 <div style="display: flex; gap: 5px;justify-content: end;">
                                                         <button (click)="DeleteTodo(todo,'inprogress')"
                                                                 (click)="$event.stopPropagation()">X</button>
@@ -70,7 +70,7 @@
                                         (drop)="drop($event, 'done')">
                                         @for (todo of done;track todo.id) {
                                         <li draggable="true" (dragstart)="dragStart($event, todo,'done')"
-                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo)">
+                                                (dragend)="dragEnd($event)" (click)="OpenModal(todo,'done')">
                                                 <div style="display: flex; gap: 5px;justify-content: end;">
                                                         <button (click)="DeleteTodo(todo,'done')"
                                                                 (click)="$event.stopPropagation()">X/opyions</button>
@@ -94,19 +94,29 @@
 
 
         <div class="info">
-                <div>
+                <div class="info_head">
                         <h3>Online Members:</h3>
                         <ul>
-                                
+                                <li>asdsa</li>
+                                <li>asdsa</li>
+                                <li>asdsa</li>
+                                <li>asdsa</li>
+
                         </ul>
                 </div>
 
-                <div>
+                <div class="info_head">
                         <h3>Offline Members:</h3>
                         <ul>
                                 @for(member of service.OfflineMembers(); track member._id) {
                                         <li>{{member.name}}</li>
                                 }
+                                <li>asdsa</li>
+                                <li>asdsa</li>
+                                <li>asdsa</li>
+                                <li>asdsa</li>
+                                <li>asdsa</li>
+
                         </ul>
                 </div>
         </div>

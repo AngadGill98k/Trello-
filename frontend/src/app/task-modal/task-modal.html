@@ -34,7 +34,7 @@
 
         }@else {
         <ul class="notes">
-            @for(note of notes; track note) {
+            @for(note of notes(); track note) {
             <li class="note">
                 <span>{{note.user}}:</span>
                 {{note.note}}

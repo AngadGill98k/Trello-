@@ -18,15 +18,14 @@ import { Socket } from '../../socket';
 })
 export class Home implements OnInit{
   ngOnInit(): void {
-      this.CurrentProject=this.service.CurrentProject
+      
       this.socket.connect()
   }
 
-  constructor(private service:Service,private socket:Socket){
+  constructor(protected service:Service,private socket:Socket){
     effect(()=>{
-      console.log("Current Project changed:",this.CurrentProject());
     })
   }
-  CurrentProject:any=""
+  
   active_btn: string = "Projects";
 }

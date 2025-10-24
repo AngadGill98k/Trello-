@@ -1,27 +1,35 @@
-import { Component, effect, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, OnInit, signal, WritableSignal } from '@angular/core';
 import { Service } from '../components/service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Socket } from '../socket';
 
 @Component({
   selector: 'app-task-modal',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './task-modal.html',
   styleUrl: './task-modal.scss'
 })
 export class TaskModal implements OnInit {
-  todo: any;
-  AlreadyAssigned = signal<any[]>([]);
-  Assign = signal<any[]>([]);
+  todo = computed(() => {
+    console.log(this.service.ModalInfo());
+    return (this.service.ModalInfo())
+  });
+  AlreadyAssigned = computed(() => { return this.todo()?.members || [] })
+  Assign = computed(() => {
+    let assigned = this.AlreadyAssigned();
+    let projectMembers = this.service.CurrentProject()?.members ?? [];
+    return projectMembers.filter((member: any) => {
+      
+      return !assigned.some((a: any) => a.id === member.id);
+    });
+  });
   toggle: boolean = true
   note: string = ""
-  notes: any[] = []
-  constructor(protected service: Service) {
+  notes = computed(() => this.service.ModalInfo()?.note || []);
+  constructor(protected service: Service, private socket: Socket) {
     effect(() => {
-      this.todo = this.service.ModalInfo();
-      this.notes = this.service.ModalInfo()?.note
-      this.AlreadyAssigned.set(this.todo.members);
-      this.Assign.set(this.service.CurrentProject()?.members?.filter((member: any) => !this.AlreadyAssigned()?.includes(member)) || []);
+      
     })
   }
 
@@ -35,8 +43,7 @@ export class TaskModal implements OnInit {
   }
 
   AssignTask(member: any) {
-
-
+    
     fetch(`http://localhost:8080/AssignMember`, {
       method: "POST",
       headers: {
@@ -47,7 +54,7 @@ export class TaskModal implements OnInit {
       },
       body: JSON.stringify({
         id: this.service.CurrentProject()?.id,
-        task: this.todo,
+        task: this.todo(),
         members: member,
       }),
       credentials: 'include'
@@ -56,9 +63,8 @@ export class TaskModal implements OnInit {
       .then(data => {
         console.log(data);
         if (data.msg) {
-
-          this.AlreadyAssigned.set(this.service.CurrentProject()?.members);
-          this.Assign.set(this.service.CurrentProject()?.members?.filter((member: any) => !this.AlreadyAssigned()?.includes(member)) || []);
+          this.service.CurrentProject.set({ ...data.data });
+          this.socket.AssignMember(this.service.CurrentProject()?.id || "", this.todo, member);
         }
       })
       .catch(error => {
@@ -76,16 +82,18 @@ export class TaskModal implements OnInit {
       }
       , body: JSON.stringify({
         id: this.service.CurrentProject()?.id,
-        task: this.todo,
+        task: this.todo(),
         note1: this.note
-      }), 
+      }),
       credentials: 'include'
-      })  
+    })
       .then(res => res.json())
       .then(data => {
         console.log(data);
         if (data.msg) {
-
+          this.service.CurrentProject.set({ ...data.data });
+          this.socket.NoteAdd(this.service.CurrentProject()?.id || "", this.todo(), data.note,this.service.TodoSelected()?.zone);
+          this.note = ""
         }
       })
       .catch(error => {

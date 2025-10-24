@@ -66,12 +66,12 @@ export class Workspace implements OnInit {
   Addpeople(){
     console.log("workspace.Addpeople",this.friend);
     if(this.friend.length<=0){return;}
-    fetch('http://localhost:3000',{
+    fetch('http://localhost:8080',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
       },
-      body:JSON.stringify({friend:{friend:this.friend,projectid:this.projectid}}),
+      body:JSON.stringify({friend:this.friend,projectid:this.projectid}),
       credentials:'include'
     })
     .then(res=>res.json())
@@ -214,7 +214,7 @@ export class Workspace implements OnInit {
   Assignment(todo:any){
 
   }
-  OpenModal(todo:any){
-    this.service.showModal(todo);
+  OpenModal(todo:any,zone:string){
+    this.service.showModal(todo,zone);
   }  
 }

@@ -60,6 +60,12 @@ public class Home {
         return res;
     }
 
+//    @PostMapping("/add_member")
+//    public Response Addmember(@CookieValue(value ="token") String refresh_token, @RequestBody Map<String, String> body) {
+//        Log.log.info("req came in (home_con.addmember)");
+//        Log.log.info(""+body.get("friend"));
+//        Response res=homeServices.add_member(body.get("projectid"), body.get("friend"))
+//    }
     @PostMapping("/add_todo")
     public Response<Task> AddTodo(@RequestBody Project_dto body){
         String TodoName= body.getName();

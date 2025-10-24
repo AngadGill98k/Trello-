@@ -70,4 +70,18 @@ public class Socket {
         res.setUserid(user.getId());
         return res;
     }
+
+    @MessageMapping("/assign_member/{roomid}")
+    @SendTo("/client/room/{roomid}")
+    public Socket_res assign_member(@DestinationVariable String roomid, Socket_res res){
+        Log.log.info("socket.assign_member");
+        return res;
+    }
+
+    @MessageMapping("/add_note/{roomid}")
+    @SendTo("/client/room/{roomid}")
+    public Socket_res add_note(@DestinationVariable String roomid, Socket_res res){
+        Log.log.info("socket.add_note");
+        return res;
+    }
 }

@@ -84,7 +84,7 @@ export class Projects implements OnInit {
       .then(data => {
         console.log(data);
         if (data.msg) {
-          if(this.service.CurrentProject().id){
+          if(this.service.CurrentProject()){
             this.socket.LeaveRoom(this.service.CurrentProject().id);
           }
           this.service.setCurrentProject(data.data);

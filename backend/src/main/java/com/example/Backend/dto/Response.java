@@ -1,11 +1,14 @@
 package com.example.Backend.dto;
 
+import com.example.Backend.models.Note;
+
 public class Response<T> {
     private boolean msg;
     private String message;
     private String access_token;
     private String refresh_token;
     private T data;
+    private Note note;
 
     public void setMessage(String message) {
         this.message = message;
@@ -36,5 +39,11 @@ public class Response<T> {
     }
     public boolean isMsg() {
         return msg;
+    }
+    public void setNote(Note note) {
+        this.note = note;
+    }
+    public Note getNote() {
+        return note;
     }
 }

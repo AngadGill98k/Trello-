@@ -207,7 +207,7 @@ public class Home_services {
         }
     }
 
-    public Response add_member(String ProjectId,String MemberName,String MemberId,String zone){
+    public Response add_member(String ProjectId,String MemberName,String MemberId){
         try {
             Log.log.info("req came to (home_ser.add_member");
             Optional<Projects> projects=projectsRepo.findById(ProjectId);
@@ -334,6 +334,7 @@ public class Home_services {
             projectsRepo.save(project);
             res.setMsg(true);
             res.setData(project);
+            res.setNote(note1);
             res.setMessage("note ok ");
             return res;
         }catch (Exception e){

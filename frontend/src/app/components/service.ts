@@ -75,17 +75,31 @@ export class Service {
     }
 
 
-    CurrentProject:WritableSignal<any>=signal(false);
+    CurrentProject: WritableSignal<any | null> = signal(null);
     setCurrentProject(project:any){
         this.CurrentProject.set(project);
     }
 
 
-    ShowModal:WritableSignal<any>=signal(false);
-    ModalInfo:WritableSignal<any>=signal({});
-    showModal(todo:any){
+    ShowModal: WritableSignal<boolean> = signal(false);
+    TodoSelected:WritableSignal<any|null>=signal(null);
+    ModalInfo=computed(()=>{
+        if(this.TodoSelected()?.zone=="todo"){
+           return(this.CurrentProject()?.todo?.find((t:any)=>t.id==this.TodoSelected()?.todo?.id));
+        }
+
+        if(this.TodoSelected()?.zone=="inprogress"){
+            return(this.CurrentProject()?.prog?.find((t:any)=>t.id==this.TodoSelected()?.prog?.id));
+        }
+
+        if(this.TodoSelected()?.zone=="done"){   
+            return(this.CurrentProject()?.done?.find((t:any)=>t.id==this.TodoSelected()?.done?.id));
+        }
+    });
+    showModal(todo:any,zone:string){
         this.ShowModal.set(true)
-        this.ModalInfo.set(todo);
+        
+        this.TodoSelected.set({todo,zone});
     }
     closeModal(){
         this.ShowModal.set(false);

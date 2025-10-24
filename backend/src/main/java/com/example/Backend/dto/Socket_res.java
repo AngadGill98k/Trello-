@@ -2,6 +2,7 @@ package com.example.Backend.dto;
 
 import com.example.Backend.models.Member;
 import com.example.Backend.models.Note;
+import com.example.Backend.models.Projects;
 import com.example.Backend.models.Task;
 
 import java.util.Map;
@@ -97,5 +98,14 @@ public class Socket_res {
     }
     public void setOnlineMember(Map<String, Set<String>> OnlineMember) {
         this.OnlineMember = OnlineMember;
+    }
+
+
+    private Projects project;
+    public Projects getProject() {
+        return project;
+    }
+    public void setProject(Projects project) {
+        this.project = project;
     }
 }
