@@ -3,6 +3,7 @@ package com.example.Backend.controllers;
 import com.example.Backend.config.Jwt;
 import com.example.Backend.config.Log;
 import com.example.Backend.dto.Socket_res;
+import com.example.Backend.models.Member;
 import com.example.Backend.models.Task;
 import com.example.Backend.models.User;
 import com.example.Backend.repository.Projects_repo;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentMap;
 @Controller
 public class Socket {
     private User_repo user_repo;
-    private Map<String, Set<String>> OnlineMem=new ConcurrentHashMap<>();
+    private Map<String, Set<Member>> OnlineMem=new ConcurrentHashMap<>();
     private Socket_ser socket_services;
     private Jwt jwt;
     Socket (Socket_ser socket_services,Jwt jwt,User_repo user_repo){
@@ -65,9 +66,19 @@ public class Socket {
         String userId = jwt.extract_token(token);
         Optional<User> optuser=user_repo.findById(userId);
         User user=optuser.get();
-        OnlineMem.computeIfAbsent(roomid, k -> ConcurrentHashMap.newKeySet()).add(userId);
-        res.setUserName(user.getName());
-        res.setUserid(user.getId());
+        Member member=new Member();
+        member.setId(userId);
+        member.setName(user.getName());
+
+        Set<Member> members = OnlineMem.computeIfAbsent(roomid, k -> ConcurrentHashMap.newKeySet());
+
+        // Only add if user is not already in the set
+        boolean alreadyExists = members.stream().anyMatch(m -> m.getId().equals(userId));
+        if (!alreadyExists) {
+            members.add(member);
+        }
+
+        res.setMembers(members);
         return res;
     }
 

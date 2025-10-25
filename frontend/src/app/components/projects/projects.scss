@@ -5,23 +5,26 @@ h3 {
 .add_project{
     display: flex;
     flex-direction: row;
-    background-color: rgb(185, 185, 185);
-    border-radius: 4px;
+    background-color: rgb(158, 154, 154);
+    border-radius: 20px;
     height: 4vh;
     box-sizing: border-box;
-    padding: 10px;
+    margin:0 5px 0 5px;
     input{
         width: 70%;
+        display: inline-block;
+        height: 100%;
         background: none;
         border: none;
         border-radius: 20px;
         box-sizing: border-box;
         padding-left: 10px;
-        background: none;
+        
     }
     button{
         width: 30%;
-        background: none;
+        background-color: rgb(91, 92, 92);
+        border-radius: 20px;
         border: none;
     }
     
@@ -29,9 +32,10 @@ h3 {
 ul{
     list-style: none;
     
-    padding: 0%;
+    padding: 0 10px 0 10px;
     box-sizing: border-box;
     li{
+        border-radius: 10px;
         margin-bottom: 7px;
         height: 5vh;
         display: flex;

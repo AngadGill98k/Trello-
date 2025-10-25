@@ -105,6 +105,10 @@ export class Service {
         this.ShowModal.set(false);
     }
 
-    OnlineMembers:any[]=[];
-    OfflineMembers:Signal<any[]>=computed(()=>{return this.CurrentProject()?.members || []});
+    OnlineMembers:WritableSignal<any[]>=signal([]);
+    OfflineMembers=computed(()=>{
+        return this.CurrentProject()?.members.filter((member:any)=>{
+            return !this.OnlineMembers().some((onlineMember:any)=>onlineMember._id===member._id);
+        })||[];
+    })
 }

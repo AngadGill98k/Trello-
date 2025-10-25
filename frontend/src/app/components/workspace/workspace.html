@@ -95,27 +95,22 @@
 
         <div class="info">
                 <div class="info_head">
-                        <h3>Online Members:</h3>
+                        <h3>ONLINE:</h3>
                         <ul>
-                                <li>asdsa</li>
-                                <li>asdsa</li>
-                                <li>asdsa</li>
-                                <li>asdsa</li>
+                                @for(member of service.OnlineMembers(); track member.id) {
+                                        <li>{{member.name}}</li>
+                                }
 
                         </ul>
                 </div>
 
                 <div class="info_head">
-                        <h3>Offline Members:</h3>
+                        <h3>OFFLINE:</h3>
                         <ul>
-                                @for(member of service.OfflineMembers(); track member._id) {
+                                @for(member of service.OfflineMembers(); track member.id) {
                                         <li>{{member.name}}</li>
                                 }
-                                <li>asdsa</li>
-                                <li>asdsa</li>
-                                <li>asdsa</li>
-                                <li>asdsa</li>
-                                <li>asdsa</li>
+                                
 
                         </ul>
                 </div>

@@ -138,8 +138,8 @@ export class Socket {
 
 
       if(data.action=="JoinRoom"){
-        console.log("A user has joined the room:", roomid);
-        
+        console.log("A user has joined the room:", data);
+        this.service.OnlineMembers.set(data.members)
       }
 
 
@@ -240,11 +240,13 @@ export class Socket {
         }
       }
     })
-    // this.stompClient.publish({
-    //   destination: "/app/online/" + roomid,
-    //   body: JSON.stringify({ action: "JoinRoom" }),
-    //   headers: { Authorization: `Bearer ${this.service.access_token}` }
-    // })
+
+
+    this.stompClient.publish({
+      destination: "/app/online/" + roomid,
+      body: JSON.stringify({ action: "JoinRoom" }),
+      headers: { Authorization: `Bearer ${this.service.access_token}` }
+    })
     console.log("Joined room:", roomid);
   }
 

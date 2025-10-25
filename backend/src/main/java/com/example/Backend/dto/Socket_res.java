@@ -5,6 +5,7 @@ import com.example.Backend.models.Note;
 import com.example.Backend.models.Projects;
 import com.example.Backend.models.Task;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -107,5 +108,14 @@ public class Socket_res {
     }
     public void setProject(Projects project) {
         this.project = project;
+    }
+
+
+    private Set<Member> members=new HashSet<>();
+    public Set<Member> getMembers() {
+        return members;
+    }
+    public void setMembers(Set<Member> members) {
+        this.members = members;
     }
 }

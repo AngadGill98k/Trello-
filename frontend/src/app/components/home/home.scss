@@ -22,9 +22,11 @@
         }
         button:last-child{
             border-right: 0px;
+            border-left: 0px;
         }
         button:first-child{
             border-left: 0px;
+            border-right: 0px;
         }
         button:hover{
             background-color: rgb(70, 70, 70);
